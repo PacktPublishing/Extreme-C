@@ -1,6 +1,10 @@
-# Extreme-C
-Extreme C, published by Packt
-Written by Kamran Amini (kam.cpp@gmail.com)
+## Extreme C
+
+#### Kamran Amini <kam.cpp@gmail.com>
+
+### Published by Packt
+
+---------------------------------------
 
 ## How to build?
 
