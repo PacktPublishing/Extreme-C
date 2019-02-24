@@ -1,12 +1,12 @@
 ## Extreme C
 
-#### Kamran Amini <kam.cpp@gmail.com>
+Kamran Amini <kam.cpp@gmail.com>
 
-### Published by Packt
+**Published by Packt**
 
 ---------------------------------------
 
-## How to build?
+### How to build?
 
 Run the following commands in order to build the sources of all chapters.
 
