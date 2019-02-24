@@ -4,3 +4,4 @@ build
 *.obj
 *.out
 *.swp
+.DS_Store
