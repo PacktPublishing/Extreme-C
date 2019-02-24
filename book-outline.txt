@@ -1,0 +1,34 @@
+
+Extreme C by PacktPub
+
+    * Chapter  0 > C in 21st Century --------------------------------     Pages
+
+Part 1: Single Process Software
+
+    * Chapter  1 > Remarkable Syntax --------------------------------  51 Pages
+    * Chapter  2 > Memory -------------------------------------------  41 Pages
+    * Chapter  3 > From Source to Binary ----------------------------  48 Pages
+    * Chapter  4 > Object Oriented Programming: Theory and Basics ---  59 Pages
+    * Chapter  5 > Object Oriented Programming: Advanced Topics -----  58 Pages
+    * Chapter  6 > UNIX: History and Architecture ------------------- ~27 Pages >> (Old chapter 6)
+    * Chapter  7 > UNIX: System Calls and Kernel -------------------- ~27 Pages >> (Old chapter 6)
+    * Chapter  8 > Concurrency: Basic Concepts ---------------------- ~20 Pages >> (Old chapter 7)
+    * Chapter  9 > Concurrency: Synchronization --------------------- ~43 Pages >> (Old chapter 7)
+    * Chapter 10 > Multithreading: Thread Execution ----------------- ~25 Pages >> (Old chapter 8)
+    * Chapter 11 > Multithreading: Concurrency Control -------------- ~36 Pages >> (Old chapter 8)
+    * Chapter 12 > C11 ----------------------------------------------  11 Pages
+    * Chapter 13 > Integration with Other Languages -----------------  26 Pages
+
+Part 2: Multiple Process Software
+
+    * Chapter 14 > Multiprocessing: Process Execution --------------- ~27 Pages >> (Old chapter 11)
+    * Chapter 15 > Multiprocessing: Concurrency Control ------------- ~31 Pages >> (Old chapter 11)
+    * Chapter 16 > Inter Process Communication: ??? -----------------     Pages >> (Old chpater 12)
+    * Chapter 17 > Inter Process Communication: ??? -----------------     Pages >> (Old chapter 12)
+    * Chapter 18 > Enterprise Architecture --------------------------     Pages
+
+Part 3: Production
+
+    * Chapter 19 > Testing and Troubleshoot -------------------------  28 Pages
+    * Chapter 20 > Packaging and Delivery ---------------------------     Pages
+
