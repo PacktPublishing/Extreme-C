@@ -1,5 +1,21 @@
 cmake_minimum_required(VERSION 3.8)
 
+add_executable(ex10_3_mutex.out
+  ExtremeC_examples_chapter10_3_mutex.c
+)
+
+target_link_libraries(ex10_3_mutex.out
+  pthread
+)
+
+add_executable(ex10_3_sem.out
+  ExtremeC_examples_chapter10_3_sem.c
+)
+
+target_link_libraries(ex10_3_sem.out
+  pthread
+)
+
 add_executable(ex11_1_cv.out
   ExtremeC_examples_chapter11_1_cv.c
 )

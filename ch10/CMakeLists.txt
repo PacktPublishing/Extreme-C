@@ -39,19 +39,3 @@ add_executable(ex10_3.out
 target_link_libraries(ex10_3.out
   pthread
 )
-
-add_executable(ex10_3_mutex.out
-  ExtremeC_examples_chapter10_3_mutex.c
-)
-
-target_link_libraries(ex10_3_mutex.out
-  pthread
-)
-
-add_executable(ex10_3_sem.out
-  ExtremeC_examples_chapter10_3_sem.c
-)
-
-target_link_libraries(ex10_3_sem.out
-  pthread
-)
