@@ -1,0 +1,10 @@
+clean:
+	rm -rf .build
+build:
+	mkdir -p .build
+	gcc -c calc/add.c -o .build/add.o
+	gcc -c calc/multiply.c -o .build/multiply.o
+	gcc -c calc/subtract.c -o .build/subtract.o
+	ar rcs .build/libcalc.a .build/add.o .build/multiply.o .build/subtract.o
+	gcc -c -Icalc exec/main.c -o .build/main.o
+	gcc -L.build -lcalc .build/main.o -o .build/ex20_1.out
