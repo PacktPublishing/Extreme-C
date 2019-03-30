@@ -3,9 +3,7 @@
 
 #include <stdlib.h>
 #include <string.h>
-
 #include "ExtremeC_examples_chapter5_2_person.h"
-
 // person_t is defined in the following header file and we need it here.
 #include "ExtremeC_examples_chapter5_2_person_p.h"
 
@@ -19,15 +17,11 @@ typedef struct {
   unsigned int passed_credits;
 } student_t;
 
-// Memory allocator
-student_t* student_new() {
-  return (student_t*)malloc(sizeof(student_t));
-}
+student_t* student_new() { return (student_t*)malloc(sizeof(student_t)); }
 
-// Constructor
-void student_ctor(student_t* student, 
-                  const char* first_name, 
-                  const char* last_name, 
+void student_ctor(student_t* student,
+                  const char* first_name,
+                  const char* last_name,
                   unsigned int birth_year,
                   const char* student_number,
                   unsigned int passed_credits) {
@@ -38,7 +32,6 @@ void student_ctor(student_t* student,
   student->passed_credits = passed_credits;
 }
 
-// Destructor
 void student_dtor(student_t* student) {
   // We need to destruct the child object first.
   free(student->student_number);
@@ -46,7 +39,6 @@ void student_dtor(student_t* student) {
   person_dtor((struct person_t*)student);
 }
 
-// Behavior functions
 void student_get_student_number(student_t* student, char* buffer) {
   strcpy(buffer, student->student_number);
 }

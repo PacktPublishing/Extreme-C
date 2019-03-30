@@ -3,7 +3,6 @@
 
 #include <stdlib.h>
 #include <string.h>
-
 // Public interafce of the person class
 #include "ExtremeC_examples_chapter5_3_person.h"
 
@@ -16,15 +15,11 @@ typedef struct {
   struct person_t* person;
 } student_t;
 
-// Memory allocator
-student_t* student_new() {
-  return (student_t*)malloc(sizeof(student_t));
-}
+student_t* student_new() { return (student_t*)malloc(sizeof(student_t)); }
 
-// Constructor
-void student_ctor(student_t* student, 
-                  const char* first_name, 
-                  const char* last_name, 
+void student_ctor(student_t* student,
+                  const char* first_name,
+                  const char* last_name,
                   unsigned int birth_year,
                   const char* student_number,
                   unsigned int passed_credits) {
@@ -36,7 +31,6 @@ void student_ctor(student_t* student,
   student->passed_credits = passed_credits;
 }
 
-// Destructor
 void student_dtor(student_t* student) {
   // We need to destruct the child object first.
   free(student->student_number);
@@ -46,7 +40,6 @@ void student_dtor(student_t* student) {
   free(student->person);
 }
 
-// Behavior functions
 void student_get_first_name(student_t* student, char* buffer) {
   // We have to use person's behavior function
   person_get_first_name(student->person, buffer);

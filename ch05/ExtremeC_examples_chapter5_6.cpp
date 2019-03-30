@@ -5,8 +5,7 @@
 
 class A {
 public:
-  char c;
-  char d;
+  char c, d;
 };
 
 class B : public A {

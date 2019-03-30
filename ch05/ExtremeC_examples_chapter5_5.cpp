@@ -8,8 +8,7 @@ public:
   int Area() {
     return width * length;
   }
-  int width;
-  int length;
+  int width, length;
 };
 
 int main(int argc, char** argv) {

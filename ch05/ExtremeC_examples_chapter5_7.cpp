@@ -5,20 +5,17 @@
 
 class A {
 public:
-  char a;
-  char b[4];
+  char a, b[4];
 };
 
 class B {
 public:
-  char c;
-  char d;
+  char c, d;
 };
 
 class C {
 public:
-  char e;
-  char f;
+  char e, f;
 };
 
 class D : public A, public B, public C {
@@ -30,10 +27,7 @@ int main(int argc, char** argv) {
   D d;
   d.a = 'A';
   strcpy(d.b, "BBB");
-  d.c = 'C';
-  d.d = 'D';
-  d.e = 'E';
-  d.f = 'F';
+  d.c = 'C'; d.d = 'D'; d.e = 'E'; d.f = 'F';
   strcpy(d.str, "1234");
   A* ap = (A*)&d;
   B* bp = (B*)&d;

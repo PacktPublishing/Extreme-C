@@ -4,8 +4,7 @@
 #include <stdio.h>
 
 typedef struct {
-  int width;
-  int length;
+  int width, length;
 } rect_t;
 
 int rect_area(rect_t* rect) {

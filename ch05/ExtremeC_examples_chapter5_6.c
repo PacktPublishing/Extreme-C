@@ -4,8 +4,7 @@
 #include <string.h>
 
 typedef struct {
-  char c;
-  char d;
+  char c, d;
 } a_t;
 
 typedef struct {
