@@ -2,7 +2,6 @@
 // Description: Definition of the member functions in the Car class
 
 #include <string.h>
-
 #include "ExtremeC_examples_chapter4_2.h"
 
 Car::Car(const char* name) {
@@ -11,9 +10,7 @@ Car::Car(const char* name) {
   this->fuel = 0.0;
 }
 
-Car::~Car() {
-  // Nothing to do
-}
+Car::~Car() {}
 
 void Car::Accelerate() {
   this->speed += 0.05;
@@ -34,6 +31,4 @@ void Car::Brake() {
   }
 }
 
-void Car::Refuel(double amount) {
-  this->fuel = amount;
-}
+void Car::Refuel(double amount) { this->fuel = amount; }

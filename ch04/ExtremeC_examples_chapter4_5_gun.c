@@ -10,12 +10,8 @@ typedef struct {
   int bullets;
 } gun_t;
 
-// Memory allocator
-gun_t* gun_new() {
-  return (gun_t*)malloc(sizeof(gun_t));
-}
+gun_t* gun_new() { return (gun_t*)malloc(sizeof(gun_t)); }
 
-// Constructor
 void gun_ctor(gun_t* gun, int initial_bullets) {
   gun->bullets = 0;
   if (initial_bullets > 0) {
@@ -23,20 +19,8 @@ void gun_ctor(gun_t* gun, int initial_bullets) {
   }
 }
 
-// Destructor
-void gun_dtor(gun_t* gun) {
-  // Nothing to do
-}
+void gun_dtor(gun_t* gun) {}
 
-// Behavior functions
-bool_t gun_has_bullets(gun_t* gun) {
-  return (gun->bullets > 0);
-}
-
-void gun_trigger(gun_t* gun) {
-  gun->bullets--;
-}
-
-void gun_refill(gun_t* gun) {
-  gun->bullets = 7;
-}
+bool_t gun_has_bullets(gun_t* gun) { return (gun->bullets > 0); }
+void gun_trigger(gun_t* gun) { gun->bullets--; }
+void gun_refill(gun_t* gun) { gun->bullets = 7; }

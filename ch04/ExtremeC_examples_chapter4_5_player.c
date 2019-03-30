@@ -13,12 +13,8 @@ typedef struct {
   struct gun_t* gun;
 } player_t;
 
-// Memory allocator
-player_t* player_new() {
-  return (player_t*)malloc(sizeof(player_t));
-}
+player_t* player_new() { return (player_t*)malloc(sizeof(player_t)); }
 
-// Constructor
 void player_ctor(player_t* player, const char* name) {
   player->name = (char*)malloc((strlen(name) + 1) * sizeof(char));
   strcpy(player->name, name);
@@ -27,14 +23,10 @@ void player_ctor(player_t* player, const char* name) {
   player->gun = NULL;
 }
 
-// Destructor
-void player_dtor(player_t* player) {
-  free(player->name);
-}
+void player_dtor(player_t* player) { free(player->name); }
 
-// Behavior functions
 void player_pickup_gun(player_t* player, struct gun_t* gun) {
-  // After the following line the aggregation relation begins.
+  // Here, we establish the aggregation relation.
   player->gun = gun;
 }
 

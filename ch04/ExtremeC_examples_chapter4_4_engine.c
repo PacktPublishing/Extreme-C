@@ -3,45 +3,30 @@
 
 #include <stdlib.h>
 
-typedef enum {
-  ON,
-  OFF
-} state_t;
+typedef enum { ON, OFF } state_t;
 
 typedef struct {
   state_t state;
   double temperature;
 } engine_t;
 
-// Memory allocator
-engine_t* engine_new() {
-  return (engine_t*)malloc(sizeof(engine_t));
-}
+engine_t* engine_new() { return (engine_t*)malloc(sizeof(engine_t)); }
 
-// Constructor
 void engine_ctor(engine_t* engine) {
   engine->state = OFF;
   engine->temperature = 15;
 }
 
-// Destructor
-void engine_dtor(engine_t* engine) {
-  // Nothing to do
-}
+void engine_dtor(engine_t* engine) {}
 
-// Behavior functions
 void engine_turn_on(engine_t* engine) {
-  if (engine->state == ON) {
-    return;
-  }
+  if (engine->state == ON) { return; }
   engine->state = ON;
   engine->temperature = 75;
 }
 
 void engine_turn_off(engine_t* engine) {
-  if (engine->state == OFF) {
-    return;
-  }
+  if (engine->state == OFF) { return; }
   engine->state = OFF;
   engine->temperature = 15;
 }
