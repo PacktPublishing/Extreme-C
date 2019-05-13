@@ -3,14 +3,14 @@
 
 #include <stdint.h>
 
-typedef int status_t;
+#define STATUS_OK 0
+#define STATUS_INVALID_REQUEST 1
+#define STATUS_INVALID_METHOD 2
+#define STATUS_INVALID_OPERAND 3
+#define STATUS_DIV_BY_ZERO 4
+#define STATUS_INTERNAL_ERROR 20
 
-static const status_t STATUS_OK = 0;
-static const status_t STATUS_INVALID_REQUEST = 1;
-static const status_t STATUS_INVALID_METHOD = 2;
-static const status_t STATUS_INVALID_OPERAND = 3;
-static const status_t STATUS_DIV_BY_ZERO = 4;
-static const status_t STATUS_INTERNAL_ERROR = 20;
+typedef int status_t;
 
 struct calc_proto_resp_t {
   int32_t req_id;

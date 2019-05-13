@@ -7,9 +7,7 @@
 #include <sys/socket.h>
 #include <sys/un.h>
 
-extern int cont;
-
-void client_loop(int conn_fd);
+#include <stream_client_core.h>
 
 int main(int argc, char** argv) {
   char sock_file[] = "/tmp/calc_svc.sock";
@@ -37,7 +35,7 @@ int main(int argc, char** argv) {
     exit(1);
   }
 
-  client_loop(conn_fd);
+  stream_client_loop(conn_fd);
 
   return 0;
 }

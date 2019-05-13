@@ -1,6 +1,8 @@
 #ifndef CALC_PROTO_SER_H
 #define CALC_PROTO_SER_H
 
+#include <types.h>
+
 #include "calc_proto_req.h"
 #include "calc_proto_resp.h"
 
@@ -40,11 +42,11 @@ void calc_proto_ser_set_req_callback(struct calc_proto_ser_t* ser, req_cb_t cb);
 void calc_proto_ser_set_resp_callback(struct calc_proto_ser_t* ser, resp_cb_t cb);
 void calc_proto_ser_set_error_callback(struct calc_proto_ser_t* ser, error_cb_t cb);
 
-void calc_proto_ser_server_deserialize(struct calc_proto_ser_t* ser, struct buffer_t);
+void calc_proto_ser_server_deserialize(struct calc_proto_ser_t* ser, struct buffer_t, bool_t* req_found);
 struct buffer_t calc_proto_ser_server_serialize(struct calc_proto_ser_t* ser,
     const struct calc_proto_resp_t* resp);
 
-void calc_proto_ser_client_deserialize(struct calc_proto_ser_t* ser, struct buffer_t);
+void calc_proto_ser_client_deserialize(struct calc_proto_ser_t* ser, struct buffer_t, bool_t* resp_found);
 struct buffer_t calc_proto_ser_client_serialize(struct calc_proto_ser_t* ser,
     const struct calc_proto_req_t* req);
 

@@ -8,13 +8,21 @@
 #include <sys/socket.h>
 #include <sys/un.h>
 
-void accept_forever(int server_fd);
+#include <datagram_server_core.h>
+
+struct sockaddr* sockaddr_new() {
+  return malloc(sizeof(struct sockaddr_un));
+}
+
+socklen_t sockaddr_sizeof() {
+  return sizeof(struct sockaddr_un);
+}
 
 int main(int argc, char** argv) {
   char sock_file[] = "/tmp/calc_svc.sock";
 
   // ----------- 1. Create socket object ------------------
-  int server_fd = socket(AF_UNIX, SOCK_STREAM, 0);
+  int server_fd = socket(AF_UNIX, SOCK_DGRAM, 0);
   if (server_fd == -1) {
     fprintf(stderr, "Could not create socket: %s\n", strerror(errno));
     exit(1);
@@ -38,16 +46,8 @@ int main(int argc, char** argv) {
     exit(1);
   }
 
-  // ----------- 3. Prepare backlog ------------------
-  result = listen(server_fd, 10);
-  if (result == -1) {
-    close(server_fd);
-    fprintf(stderr, "Could not set the backlog: %s\n", strerror(errno));
-    exit(1);
-  }
-
-  // ----------- 4. Start accepting clients ---------
-  accept_forever(server_fd);
+  // ----------- 3. Start serving requests ---------
+  serve_forever(server_fd);
 
   return 0;
 }

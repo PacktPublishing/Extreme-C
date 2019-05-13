@@ -5,11 +5,6 @@
 
 #include "calc_proto_ser.h"
 
-#define TRUE 1
-#define FALSE 0
-
-typedef int bool_t;
-
 #define FIELD_COUNT_PER_REQ_MESSAGE 4
 #define FIELD_COUNT_PER_RESP_MESSAGE 3
 #define MESSAGE_DELIMITER '$'
@@ -180,7 +175,7 @@ void _parse_resp_and_notify(struct calc_proto_ser_t* ser) {
 }
 
 void _deserialize(struct calc_proto_ser_t* ser, struct buffer_t buff,
-    parse_and_notify_func_t func, int error_code) {
+    parse_and_notify_func_t func, int error_code, bool_t* found) {
   if (buff.len > ser->buf_len) {
       if (ser->error_cb) {
         ser->error_cb(ser->context, -1, error_code);
@@ -202,6 +197,9 @@ void _deserialize(struct calc_proto_ser_t* ser, struct buffer_t buff,
     }
     if (ser->ring_buf[ser->curr_idx] == MESSAGE_DELIMITER &&
         ser->start_idx >= 0) {
+      if (found) {
+        *found = TRUE;
+      }
       func(ser);
       ser->start_idx = -1;
     } else if (ser->ring_buf[ser->curr_idx] != MESSAGE_DELIMITER &&
@@ -214,7 +212,7 @@ void _deserialize(struct calc_proto_ser_t* ser, struct buffer_t buff,
     }
   }
   if (overflow) {
-    _deserialize(ser, buff, func, error_code);
+    _deserialize(ser, buff, func, error_code, found);
   }
 }
 
@@ -260,8 +258,11 @@ void calc_proto_ser_set_error_callback(struct calc_proto_ser_t* ser, error_cb_t 
   ser->error_cb = error_cb;
 }
 
-void calc_proto_ser_server_deserialize(struct calc_proto_ser_t* ser, struct buffer_t buff) {
-  _deserialize(ser, buff, _parse_req_and_notify, ERROR_INVALID_REQUEST);
+void calc_proto_ser_server_deserialize(struct calc_proto_ser_t* ser, struct buffer_t buff, bool_t* req_found) {
+  if (req_found) {
+    *req_found = FALSE;
+  }
+  _deserialize(ser, buff, _parse_req_and_notify, ERROR_INVALID_REQUEST, req_found);
 }
 
 struct buffer_t calc_proto_ser_server_serialize(struct calc_proto_ser_t* ser,
@@ -276,8 +277,11 @@ struct buffer_t calc_proto_ser_server_serialize(struct calc_proto_ser_t* ser,
   return buff;
 }
 
-void calc_proto_ser_client_deserialize(struct calc_proto_ser_t* ser, struct buffer_t buff) {
-  _deserialize(ser, buff, _parse_resp_and_notify, ERROR_INVALID_RESPONSE);
+void calc_proto_ser_client_deserialize(struct calc_proto_ser_t* ser, struct buffer_t buff, bool_t* resp_found) {
+  if (resp_found) {
+    *resp_found = FALSE;
+  }
+  _deserialize(ser, buff, _parse_resp_and_notify, ERROR_INVALID_RESPONSE, resp_found);
 }
 
 struct buffer_t calc_proto_ser_client_serialize(struct calc_proto_ser_t* ser,

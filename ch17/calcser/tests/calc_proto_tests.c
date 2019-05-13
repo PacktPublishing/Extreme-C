@@ -51,7 +51,7 @@ void calc_server_deserialize__long_request(void** state) {
   buf.len = strlen(req);
   err_cb_called = FALSE;
   expected_error_code = ERROR_INVALID_REQUEST;
-  calc_proto_ser_server_deserialize(ser, buf);
+  calc_proto_ser_server_deserialize(ser, buf, NULL);
   assert_true(err_cb_called);
 }
 
@@ -68,19 +68,19 @@ void calc_server_deserialize__long_request_2(void** state) {
 
   buf.data = part1;
   buf.len = strlen(part1);
-  calc_proto_ser_server_deserialize(ser, buf);
+  calc_proto_ser_server_deserialize(ser, buf, NULL);
 
   buf.data = part2;
   buf.len = strlen(part2);
-  calc_proto_ser_server_deserialize(ser, buf);
+  calc_proto_ser_server_deserialize(ser, buf, NULL);
 
   buf.data = part3;
   buf.len = strlen(part3);
-  calc_proto_ser_server_deserialize(ser, buf);
+  calc_proto_ser_server_deserialize(ser, buf, NULL);
 
   buf.data = part4;
   buf.len = strlen(part4);
-  calc_proto_ser_server_deserialize(ser, buf);
+  calc_proto_ser_server_deserialize(ser, buf, NULL);
 
   assert_true(err_cb_called);
 }
@@ -94,7 +94,7 @@ void calc_server_deserialize__invalid_method(void** state) {
   buf.len = strlen(req);
   err_cb_called = FALSE;
   expected_error_code = ERROR_INVALID_REQUEST_METHOD;
-  calc_proto_ser_server_deserialize(ser, buf);
+  calc_proto_ser_server_deserialize(ser, buf, NULL);
   assert_true(err_cb_called);
 }
 
@@ -107,7 +107,7 @@ void calc_server_deserialize__invalid_operand(void** state) {
   buf.len = strlen(req);
   err_cb_called = FALSE;
   expected_error_code = ERROR_INVALID_REQUEST_OPERAND1;
-  calc_proto_ser_server_deserialize(ser, buf);
+  calc_proto_ser_server_deserialize(ser, buf, NULL);
   assert_true(err_cb_called);
 }
 
@@ -120,7 +120,7 @@ void calc_server_deserialize__invalid_operand_2(void** state) {
   buf.len = strlen(req);
   err_cb_called = FALSE;
   expected_error_code = ERROR_INVALID_REQUEST_OPERAND2;
-  calc_proto_ser_server_deserialize(ser, buf);
+  calc_proto_ser_server_deserialize(ser, buf, NULL);
   assert_true(err_cb_called);
 }
 
@@ -133,7 +133,7 @@ void calc_server_deserialize__too_many_fields(void** state) {
   buf.len = strlen(req);
   err_cb_called = FALSE;
   expected_error_code = ERROR_INVALID_REQUEST;
-  calc_proto_ser_server_deserialize(ser, buf);
+  calc_proto_ser_server_deserialize(ser, buf, NULL);
   assert_true(err_cb_called);
 }
 
@@ -145,7 +145,7 @@ void calc_server_deserialize__single_request(void** state) {
   buf.data = req;
   buf.len = strlen(req);
   req_cb_called = FALSE;
-  calc_proto_ser_server_deserialize(ser, buf);
+  calc_proto_ser_server_deserialize(ser, buf, NULL);
   assert_true(err_cb_called);
 }
 
@@ -161,19 +161,19 @@ void calc_server_deserialize__multipart_request(void** state) {
 
   buf.data = part1;
   buf.len = strlen(part1);
-  calc_proto_ser_server_deserialize(ser, buf);
+  calc_proto_ser_server_deserialize(ser, buf, NULL);
 
   buf.data = part2;
   buf.len = strlen(part2);
-  calc_proto_ser_server_deserialize(ser, buf);
+  calc_proto_ser_server_deserialize(ser, buf, NULL);
 
   buf.data = part3;
   buf.len = strlen(part3);
-  calc_proto_ser_server_deserialize(ser, buf);
+  calc_proto_ser_server_deserialize(ser, buf, NULL);
 
   buf.data = part4;
   buf.len = strlen(part4);
-  calc_proto_ser_server_deserialize(ser, buf);
+  calc_proto_ser_server_deserialize(ser, buf, NULL);
 
   assert_true(req_cb_called);
 }
@@ -194,33 +194,33 @@ void calc_server_deserialize__multipart_request_2(void** state) {
 
   buf.data = part1;
   buf.len = strlen(part1);
-  calc_proto_ser_server_deserialize(ser, buf);
+  calc_proto_ser_server_deserialize(ser, buf, NULL);
 
   buf.data = part2;
   buf.len = strlen(part2);
-  calc_proto_ser_server_deserialize(ser, buf);
+  calc_proto_ser_server_deserialize(ser, buf, NULL);
 
   buf.data = "$";
   buf.len = 1;
-  calc_proto_ser_server_deserialize(ser, buf);
+  calc_proto_ser_server_deserialize(ser, buf, NULL);
 
   assert_true(err_cb_called);
 
   buf.data = part1;
   buf.len = strlen(part1);
-  calc_proto_ser_server_deserialize(ser, buf);
+  calc_proto_ser_server_deserialize(ser, buf, NULL);
 
   buf.data = part2;
   buf.len = strlen(part2);
-  calc_proto_ser_server_deserialize(ser, buf);
+  calc_proto_ser_server_deserialize(ser, buf, NULL);
 
   buf.data = part3;
   buf.len = strlen(part3);
-  calc_proto_ser_server_deserialize(ser, buf);
+  calc_proto_ser_server_deserialize(ser, buf, NULL);
 
   buf.data = part4;
   buf.len = strlen(part4);
-  calc_proto_ser_server_deserialize(ser, buf);
+  calc_proto_ser_server_deserialize(ser, buf, NULL);
 
   assert_true(req_cb_called);
 }
@@ -234,7 +234,7 @@ void calc_client_deserialize__invalid_req_id(void** state) {
   buf.len = strlen(req);
   err_cb_called = FALSE;
   expected_error_code = ERROR_INVALID_RESPONSE_REQ_ID;
-  calc_proto_ser_client_deserialize(ser, buf);
+  calc_proto_ser_client_deserialize(ser, buf, NULL);
   assert_true(err_cb_called);
 }
 
@@ -247,7 +247,7 @@ void calc_client_deserialize__invalid_status(void** state) {
   buf.len = strlen(req);
   err_cb_called = FALSE;
   expected_error_code = ERROR_INVALID_RESPONSE_STATUS;
-  calc_proto_ser_client_deserialize(ser, buf);
+  calc_proto_ser_client_deserialize(ser, buf, NULL);
   assert_true(err_cb_called);
 }
 
@@ -260,7 +260,7 @@ void calc_client_deserialize__invalid_status_2(void** state) {
   buf.len = strlen(req);
   err_cb_called = FALSE;
   expected_error_code = ERROR_INVALID_RESPONSE_STATUS;
-  calc_proto_ser_client_deserialize(ser, buf);
+  calc_proto_ser_client_deserialize(ser, buf, NULL);
   assert_true(err_cb_called);
 }
 
@@ -273,7 +273,7 @@ void calc_client_deserialize__invalid_result(void** state) {
   buf.len = strlen(req);
   err_cb_called = FALSE;
   expected_error_code = ERROR_INVALID_RESPONSE_RESULT;
-  calc_proto_ser_client_deserialize(ser, buf);
+  calc_proto_ser_client_deserialize(ser, buf, NULL);
   assert_true(err_cb_called);
 }
 
@@ -286,7 +286,7 @@ void calc_client_deserialize__single_response(void** state) {
   buf.len = strlen(req);
   resp_cb_called = FALSE;
   expected_status = STATUS_DIV_BY_ZERO;
-  calc_proto_ser_client_deserialize(ser, buf);
+  calc_proto_ser_client_deserialize(ser, buf, NULL);
   assert_true(resp_cb_called);
 }
 
@@ -305,15 +305,15 @@ void calc_client_deserialize__multipart_request_2(void** state) {
 
   buf.data = part1;
   buf.len = strlen(part1);
-  calc_proto_ser_client_deserialize(ser, buf);
+  calc_proto_ser_client_deserialize(ser, buf, NULL);
 
   buf.data = part2;
   buf.len = strlen(part2);
-  calc_proto_ser_client_deserialize(ser, buf);
+  calc_proto_ser_client_deserialize(ser, buf, NULL);
 
   buf.data = "$";
   buf.len = 1;
-  calc_proto_ser_client_deserialize(ser, buf);
+  calc_proto_ser_client_deserialize(ser, buf, NULL);
 
   assert_true(err_cb_called);
 
@@ -321,15 +321,15 @@ void calc_client_deserialize__multipart_request_2(void** state) {
 
   buf.data = part1;
   buf.len = strlen(part1);
-  calc_proto_ser_client_deserialize(ser, buf);
+  calc_proto_ser_client_deserialize(ser, buf, NULL);
 
   buf.data = part2;
   buf.len = strlen(part2);
-  calc_proto_ser_client_deserialize(ser, buf);
+  calc_proto_ser_client_deserialize(ser, buf, NULL);
 
   buf.data = part3;
   buf.len = strlen(part3);
-  calc_proto_ser_client_deserialize(ser, buf);
+  calc_proto_ser_client_deserialize(ser, buf, NULL);
 
   assert_true(resp_cb_called);
 }

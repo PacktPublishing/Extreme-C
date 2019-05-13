@@ -1,13 +1,10 @@
 #ifndef CALC_SERVICE_H
 #define CALC_SERVICE_H
 
-#define TRUE 1
-#define FALSE 0
+#include <types.h>
 
 static const int CALC_SVC_OK = 0;
 static const int CALC_SVC_ERROR_DIV_BY_ZERO = -1;
-
-typedef int bool_t;
 
 struct calc_service_t;
 
