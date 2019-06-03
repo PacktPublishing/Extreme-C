@@ -1,4 +1,4 @@
-// File name: ExtremeC_examples_chapter6_3.c
+// File name: ExtremeC_examples_chapter7_2.c
 // Description: Invoke the hello world system call
 
 // We need to have this to be able to use non-POSIX stuff
