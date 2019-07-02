@@ -28,26 +28,3 @@ add_library(ex3_6 STATIC
   ExtremeC_examples_chapter3_6_add_1.c
   ExtremeC_examples_chapter3_6_add_2.c
 )
-
-add_executable(ex3_7.out
-  ExtremeC_examples_chapter3_7_funcs.c
-  ExtremeC_examples_chapter3_7.c
-)
-
-add_library(geometry STATIC SHARED
-  ExtremeC_examples_chapter3_8_2d.c
-  ExtremeC_examples_chapter3_8_3d.c
-  ExtremeC_examples_chapter3_8_trigon.c
-)
-
-add_executable(ex3_9.out
-  ExtremeC_examples_chapter3_9.c
-)
-
-target_link_libraries(ex3_9.out
-  geometry
-)
-
-add_executable(ex3_10.out
-  ExtremeC_examples_chapter3_10.c
-)
