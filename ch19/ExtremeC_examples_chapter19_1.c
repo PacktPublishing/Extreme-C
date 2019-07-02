@@ -1,22 +1,14 @@
-// File name: ExtremeC_examples_chapter19_1.c
-// Description: Definisitons of the declared functions
+// File name: ExtremeC_examples_chapter19_1_main.c
+// Description: Uses the functions 'max' and 'max_3'.
 
-#include "ExtremeC_examples_chapter19_1.h"
+int max(int, int);
+int max_3(int, int, int);
 
-int64_t next_even_number() {
-  static int feed = -2;
-  feed += 2;
-  if (feed >= 10) {
-    feed = 0;
-  }
-  return feed;
-}
+int a = 5;
+int b = 10;
 
-int64_t calc_factorial(int64_feed_t feed) {
-  int64_t fact = 1;
-  int64_t number = feed();
-  for (int64_t i = 1; i <= number; i++) {
-    fact *= i;
-  }
-  return fact;
+int main(int argc, char** argv) {
+  int m1 = max(a, b);
+  int m2 = max_3(5, 8, -1);
+  return 0;
 }

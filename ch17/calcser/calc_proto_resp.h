@@ -3,12 +3,12 @@
 
 #include <stdint.h>
 
-#define STATUS_OK 0
+#define STATUS_OK              0
 #define STATUS_INVALID_REQUEST 1
-#define STATUS_INVALID_METHOD 2
+#define STATUS_INVALID_METHOD  2
 #define STATUS_INVALID_OPERAND 3
-#define STATUS_DIV_BY_ZERO 4
-#define STATUS_INTERNAL_ERROR 20
+#define STATUS_DIV_BY_ZERO     4
+#define STATUS_INTERNAL_ERROR  20
 
 typedef int status_t;
 
