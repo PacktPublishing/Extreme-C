@@ -115,14 +115,14 @@ int main(int argc, char** argv) {
   char ascii_string[32] = "Hello World!";
 
   char utf8_string[32] = u8"Hello World!";
-  char utf8_string_2[32] = u8"سلام دنیا!";
+  char utf8_string_2[32] = u8"درود دنیا!";
 
   char16_t utf16_string[32] = u"Hello World!";
-  char16_t utf16_string_2[32] = u"سلام دنیا!";
+  char16_t utf16_string_2[32] = u"درود دنیا!";
   char16_t utf16_string_3[32] = u"𝦵হ𝡩!";
 
   char32_t utf32_string[32] = U"Hello World!";
-  char32_t utf32_string_2[32] = U"سلام دنیا!";
+  char32_t utf32_string_2[32] = U"درود دنیا!";
   char32_t utf32_string_3[32] = U"𝦵হ𝡩!";
 
   unicode_len_t len = strlen_ascii(ascii_string);
