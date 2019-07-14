@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>
+#include <unistd.h>
 
 #include "ExtremeC_examples_chapter15_4_shared_int32.h"
 #include "ExtremeC_examples_chapter15_4_shared_mutex.h"
@@ -16,14 +17,17 @@ struct shared_mutex_t* mutex = NULL;
 void sigint_handler(int signo) {
   fprintf(stdout, "\nHandling INT signal: %d ...\n", signo);
   int_received = 1;
-  shared_mutex_lock(mutex);
-  shared_cond_broadcast(cond);
-  shared_mutex_unlock(mutex);
 }
 
 int main(int argc, char** argv) {
 
   signal(SIGINT, sigint_handler);
+
+  if (argc < 2) {
+    fprintf(stderr,
+            "ERROR: You have to provide the process number.\n");
+    exit(1);
+  }
 
   int my_number = atol(argv[1]);
   printf("My number is %d!\n", my_number);
@@ -39,10 +43,15 @@ int main(int argc, char** argv) {
   shared_cond_ctor(cond, "/cond0");
 
   shared_mutex_lock(mutex);
-  while (shared_int32_getvalue(counter) < my_number &&
-         !int_received) {
-    printf("Waiting for my turn ...\n");
-    shared_cond_wait(cond, mutex);
+  while (shared_int32_getvalue(counter) < my_number) {
+    if (int_received) {
+        break;
+    }
+    printf("Waiting for the signal, just for 5 seconds ...\n");
+    shared_cond_timedwait(cond, mutex, 5L * 1000 * 1000 * 1000);
+    if (int_received) {
+        break;
+    }
     printf("Checking condition ...\n");
   }
   if (int_received) {
@@ -50,10 +59,12 @@ int main(int argc, char** argv) {
     shared_mutex_unlock(mutex);
     goto destroy;
   }
-  printf("My turn! %d ...\n", my_number);
   shared_int32_setvalue(counter, my_number + 1);
-  shared_cond_broadcast(cond);
+  printf("My turn! %d ...\n", my_number);
   shared_mutex_unlock(mutex);
+  sleep(1);
+  // NOTE: The broadcasting can come afetr unlocking the mutex.
+  shared_cond_broadcast(cond);
 
 destroy:
   shared_cond_dtor(cond);

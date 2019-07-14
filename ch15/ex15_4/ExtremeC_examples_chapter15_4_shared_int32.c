@@ -17,7 +17,8 @@ typedef struct {
 } shared_int32_t;
 
 shared_int32_t* shared_int32_new(const char* name) {
-  shared_int32_t* obj = (shared_int32_t*)malloc(sizeof(shared_int32_t));
+  shared_int32_t* obj =
+      (shared_int32_t*)malloc(sizeof(shared_int32_t));
   obj->shm = shared_mem_new();
   return obj;
 }
@@ -40,7 +41,8 @@ void shared_int32_setvalue(shared_int32_t* obj, int32_t value) {
   *(obj->ptr) = value;
 }
 
-void shared_int32_setvalue_ifowner(shared_int32_t* obj, int32_t value) {
+void shared_int32_setvalue_ifowner(shared_int32_t* obj,
+                                   int32_t value) {
   if (shared_mem_isowner(obj->shm)) {
     *(obj->ptr) = value;
   }

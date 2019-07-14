@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.8)
 
+SET(CMAKE_C_FLAGS  "-g")
+
 add_executable(ex15_1.out
   ExtremeC_examples_chapter15_1.c
 )

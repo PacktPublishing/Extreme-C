@@ -1,6 +1,7 @@
 // File name: ExtremeC_examples_chapter15_3.c
-// Description: Demonstrate how to use a shared memory and a shared
-//              mutex to cancel a number of processes in progress.
+// Description: Demonstrates how to use a shared memory together
+//              with a shared mutex to cancel a number of in
+//              progress processes.
 
 #include <stdio.h>
 #include <stdint.h>
@@ -19,25 +20,26 @@ typedef uint16_t bool_t;
 #define TRUE 1
 #define FALSE 0
 
-#define MUTEX_SHM_NAME "mutex0"
-#define SHM_NAME "shm0"
+#define MUTEX_SHM_NAME "/mutex0"
+#define SHM_NAME "/shm0"
 
-// Shared file descriptor used to refer to the shared memory object
-// containing the cancel flag
+// Shared file descriptor used to refer to the shared memory
+// object containing the cancel flag
 int cancel_flag_shm_fd = -1;
 
-// A flag which indicates whether the current process owns the shared
-// memory object
+// A flag which indicates whether the current process owns the
+// shared memory object
 bool_t cancel_flag_shm_owner = FALSE;
 
-// Shared file descriptor used to refer to the mutex's shared memory object
+// Shared file descriptor used to refer to the mutex's shared
+// memory object
 int mutex_shm_fd = -1;
 
 // The shared mutex
 pthread_mutex_t* mutex = NULL;
 
-// A flag which indicates whether the current process owns the shared
-// memory object
+// A flag which indicates whether the current process owns the
+// shared memory object
 bool_t mutex_owner = FALSE;
 
 // The pointer to the cancel flag stored in the shared memory
@@ -50,26 +52,31 @@ void init_shared_resource() {
     cancel_flag_shm_owner = FALSE;
     fprintf(stdout, "The shared memory object is opened.\n");
   } else if (errno == ENOENT) {
-    fprintf(stderr, "WARN: The shared memory object doesn't exist.\n");
+    fprintf(stderr,
+            "WARN: The shared memory object doesn't exist.\n");
     fprintf(stdout, "Creating the shared memory object ...\n");
-    cancel_flag_shm_fd = shm_open(SHM_NAME, O_CREAT | O_EXCL | O_RDWR, 0600);
+    cancel_flag_shm_fd = shm_open(SHM_NAME,
+            O_CREAT | O_EXCL | O_RDWR, 0600);
     if (cancel_flag_shm_fd >= 0) {
       cancel_flag_shm_owner = TRUE;
       fprintf(stdout, "The shared memory object is created.\n");
     } else {
-      fprintf(stderr, "ERROR: Failed to create shared memory: %s\n",
+      fprintf(stderr,
+          "ERROR: Failed to create shared memory: %s\n",
           strerror(errno));
       exit(1);
     }
   } else {
-      fprintf(stderr, "ERROR: Failed to create shared memory: %s\n",
+      fprintf(stderr,
+          "ERROR: Failed to create shared memory: %s\n",
           strerror(errno));
     exit(1);
   }
   if (cancel_flag_shm_owner) {
     // Allocate and truncate the shared memory region
     if (ftruncate(cancel_flag_shm_fd, sizeof(bool_t)) < 0) {
-      fprintf(stderr, "ERROR: Truncation failed: %s\n", strerror(errno));
+      fprintf(stderr, "ERROR: Truncation failed: %s\n",
+              strerror(errno));
       exit(1);
     }
     fprintf(stdout, "The memory region is truncated.\n");
@@ -78,7 +85,8 @@ void init_shared_resource() {
   void* map = mmap(0, sizeof(bool_t), PROT_WRITE, MAP_SHARED,
       cancel_flag_shm_fd, 0);
   if (map == MAP_FAILED) {
-    fprintf(stderr, "ERROR: Mapping failed: %s\n", strerror(errno));
+    fprintf(stderr, "ERROR: Mapping failed: %s\n",
+            strerror(errno));
     exit(1);
   }
   cancel_flag = (bool_t*)map;
@@ -89,18 +97,21 @@ void init_shared_resource() {
 
 void shutdown_shared_resource() {
   if (munmap(cancel_flag, sizeof(bool_t)) < 0) {
-    fprintf(stderr, "ERROR: Unmapping failed: %s\n", strerror(errno));
+    fprintf(stderr, "ERROR: Unmapping failed: %s\n",
+            strerror(errno));
     exit(1);
   }
   if (close(cancel_flag_shm_fd) < 0) {
-    fprintf(stderr, "ERROR: Closing the shared memory fd filed: %s\n",
+    fprintf(stderr,
+        "ERROR: Closing the shared memory fd filed: %s\n",
         strerror(errno));
     exit(1);
   }
   if (cancel_flag_shm_owner) {
     sleep(1);
     if (shm_unlink(SHM_NAME) < 0) {
-      fprintf(stderr, "ERROR: Unlinking the shared memory failed: %s\n",
+      fprintf(stderr,
+          "ERROR: Unlinking the shared memory failed: %s\n",
           strerror(errno));
       exit(1);
     }
@@ -113,69 +124,89 @@ void init_control_mechanism() {
   if (mutex_shm_fd >= 0) {
     // The mutex's shared object exists and I'm now the owner.
     mutex_owner = FALSE;
-    fprintf(stdout, "The mutex's shared memory object is opened.\n");
+    fprintf(stdout,
+            "The mutex's shared memory object is opened.\n");
   } else if (errno == ENOENT) {
-    fprintf(stderr, "WARN: Mutex's shared memory object doesn't exist.\n");
-    fprintf(stdout, "Creating the mutex's shared memory object ...\n");
-    mutex_shm_fd = shm_open(MUTEX_SHM_NAME, O_CREAT | O_EXCL | O_RDWR, 0600);
+    fprintf(stderr,
+            "WARN: Mutex's shared memory doesn't exist.\n");
+    fprintf(stdout,
+            "Creating the mutex's shared memory object ...\n");
+    mutex_shm_fd = shm_open(MUTEX_SHM_NAME,
+            O_CREAT | O_EXCL | O_RDWR, 0600);
     if (mutex_shm_fd >= 0) {
       mutex_owner = TRUE;
-      fprintf(stdout, "The mutex's shared memory object is created.\n");
+      fprintf(stdout,
+              "The mutex's shared memory object is created.\n");
     } else {
-      fprintf(stderr, "ERROR: Failed to create mutex's shared memory: %s\n",
+      fprintf(stderr,
+          "ERROR: Failed to create mutex's shared memory: %s\n",
           strerror(errno));
       exit(1);
     }
   } else {
-    fprintf(stderr, "ERROR: Failed to create mutex's shared memory: %s\n",
+    fprintf(stderr,
+        "ERROR: Failed to create mutex's shared memory: %s\n",
         strerror(errno));
     exit(1);
   }
   if (mutex_owner) {
     // Allocate and truncate the mutex's shared memory region
     if (ftruncate(mutex_shm_fd, sizeof(pthread_mutex_t)) < 0) {
-      fprintf(stderr, "ERROR: Truncation of the mutex failed: %s\n",
+      fprintf(stderr,
+          "ERROR: Truncation of the mutex failed: %s\n",
           strerror(errno));
       exit(1);
     }
   }
   // Map the mutex's shared memory
-  void* map = mmap(0, sizeof(pthread_mutex_t), PROT_READ | PROT_WRITE,
-      MAP_SHARED, mutex_shm_fd, 0);
+  void* map = mmap(0, sizeof(pthread_mutex_t),
+          PROT_READ | PROT_WRITE, MAP_SHARED, mutex_shm_fd, 0);
   if (map == MAP_FAILED) {
-    fprintf(stderr, "ERROR: Mapping failed: %s\n", strerror(errno));
+    fprintf(stderr, "ERROR: Mapping failed: %s\n",
+            strerror(errno));
     exit(1);
   }
   mutex = (pthread_mutex_t*)map;
-  // Initialize the mutex object
-  pthread_mutexattr_t attr;
-  if (pthread_mutexattr_init(&attr)) {
-    fprintf(stderr, "ERROR: Initializing mutex attributes failed: %s\n",
-        strerror(errno));
-    exit(1);
-  }
-  if (pthread_mutexattr_setpshared(&attr, PTHREAD_PROCESS_SHARED)) {
-    fprintf(stderr, "ERROR: Setting the mutex attribute failed: %s\n",
-        strerror(errno));
-    exit(1);
-  }
-  if (pthread_mutex_init(mutex, &attr)) {
-    fprintf(stderr, "ERROR: Initializing the mutex failed: %s\n",
-        strerror(errno));
-    exit(1);
-  }
-  if (pthread_mutexattr_destroy(&attr)) {
-    fprintf(stderr, "ERROR: Destruction of mutex attributes failed: %s\n",
-        strerror(errno));
-    exit(1);
+  if (mutex_owner) {
+    int ret = -1;
+    pthread_mutexattr_t attr;
+    if ((ret = pthread_mutexattr_init(&attr))) {
+      fprintf(stderr,
+          "ERROR: Initializing mutex attributes failed: %s\n",
+          strerror(ret));
+      exit(1);
+    }
+    if ((ret = pthread_mutexattr_setpshared(&attr,
+                    PTHREAD_PROCESS_SHARED))) {
+      fprintf(stderr,
+          "ERROR: Setting the mutex attribute failed: %s\n",
+          strerror(ret));
+      exit(1);
+    }
+    if ((ret = pthread_mutex_init(mutex, &attr))) {
+      fprintf(stderr,
+          "ERROR: Initializing the mutex failed: %s\n",
+          strerror(ret));
+      exit(1);
+    }
+    if ((ret = pthread_mutexattr_destroy(&attr))) {
+      fprintf(stderr,
+          "ERROR: Destruction of mutex attributes failed: %s\n",
+          strerror(ret));
+      exit(1);
+    }
   }
 }
 
 void shutdown_control_mechanism() {
   sleep(1);
-  if (pthread_mutex_destroy(mutex)) {
-    fprintf(stderr, "WARN: Destruction of the mutex failed: %s\n",
-        strerror(errno));
+  if (mutex_owner) {
+    int ret = -1;
+    if ((ret = pthread_mutex_destroy(mutex))) {
+      fprintf(stderr,
+          "WARN: Destruction of the mutex failed: %s\n",
+          strerror(ret));
+    }
   }
   if (munmap(mutex, sizeof(pthread_mutex_t)) < 0) {
     fprintf(stderr, "ERROR: Unmapping the mutex failed: %s\n",
@@ -188,7 +219,6 @@ void shutdown_control_mechanism() {
     exit(1);
   }
   if (mutex_owner) {
-    sleep(1);
     if (shm_unlink(MUTEX_SHM_NAME) < 0) {
       fprintf(stderr, "ERROR: Unlinking the mutex failed: %s\n",
           strerror(errno));
@@ -198,16 +228,16 @@ void shutdown_control_mechanism() {
 }
 
 bool_t is_canceled() {
-  pthread_mutex_lock(mutex);
+  pthread_mutex_lock(mutex); // Should check the return value
   bool_t temp = *cancel_flag;
-  pthread_mutex_unlock(mutex);
+  pthread_mutex_unlock(mutex); // Should check the return value
   return temp;
 }
 
 void cancel() {
-  pthread_mutex_lock(mutex);
+  pthread_mutex_lock(mutex); // Should check the return value
   *cancel_flag = TRUE;
-  pthread_mutex_unlock(mutex);
+  pthread_mutex_unlock(mutex); // Should check the return value
 }
 
 void sigint_handler(int signo) {

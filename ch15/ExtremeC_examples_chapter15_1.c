@@ -1,6 +1,6 @@
 // File name: ExtremeC_examples_chapter15_1.c
-// Description: Demonstrate how to use a named semaphore to protect a
-//              shared memory based counter.
+// Description: Demonstrates how to use a named semaphore to
+//              protect a counter inside a shared memory region.
 
 #include <stdio.h>
 #include <stdint.h>
@@ -13,16 +13,15 @@
 #include <sys/wait.h>
 #include <semaphore.h>  // For using semaphores
 
-#define SH_SIZE 4
+#define SHARED_MEM_SIZE 4
 
 // The pointer to the shared counter
 int32_t* counter = NULL;
 
-// The shared semaphore
+// The pointer to the shared semaphore
 sem_t* semaphore = NULL;
 
 void init_control_mechanism() {
-  // This semaphore allows only one process to enter the critical section
   semaphore = sem_open("/sem0", O_CREAT | O_EXCL, 0600, 1);
   if (semaphore == SEM_FAILED) {
     fprintf(stderr, "ERROR: Opening the semaphore failed: %s\n",
@@ -38,7 +37,7 @@ void shutdown_control_mechanism() {
     exit(1);
   }
   if (sem_unlink("/sem0") < 0) {
-    fprintf(stderr, "ERROR: Unlinking the semaphore failed: %s\n",
+    fprintf(stderr, "ERROR: Unlinking failed: %s\n",
         strerror(errno));
     exit(1);
   }
@@ -48,17 +47,17 @@ int init_shared_resource() {
   // Open the shared memory object
   int shm_fd = shm_open("/shm0", O_CREAT | O_RDWR, 0600);
   if (shm_fd < 0) {
-    fprintf(stderr, "ERROR: Failed to create shared memory: %s\n",
+    fprintf(stderr, "ERROR: Failed to create shared mem: %s\n",
         strerror(errno));
     exit(1);
   }
-  fprintf(stdout, "Shared memory is created with fd: %d\n", shm_fd);
+  fprintf(stdout, "Shared memory fd is: %d\n", shm_fd);
   return shm_fd;
 }
 
 void shutdown_shared_resource() {
   if (shm_unlink("/shm0") < 0) {
-    fprintf(stderr, "ERROR: Unlinking the shared memory failed: %s\n",
+    fprintf(stderr, "ERROR: Unlinking failed: %s\n",
         strerror(errno));
     exit(1);
   }
@@ -66,13 +65,13 @@ void shutdown_shared_resource() {
 
 void inc_counter() {
   usleep(1);
-  sem_wait(semaphore);
+  sem_wait(semaphore); // Return value should be checked.
   int32_t temp = *counter;
   usleep(1);
   temp++;
   usleep(1);
   *counter = temp;
-  sem_post(semaphore);
+  sem_post(semaphore); // Return value should be checked.
   usleep(1);
 }
 
@@ -85,16 +84,19 @@ int main(int argc, char** argv) {
   init_control_mechanism();
 
   // Allocate and truncate the shared memory region
-  if (ftruncate(fd, SH_SIZE * sizeof(char)) < 0) {
-    fprintf(stderr, "ERROR: Truncation failed: %s\n", strerror(errno));
+  if (ftruncate(fd, SHARED_MEM_SIZE * sizeof(char)) < 0) {
+    fprintf(stderr, "ERROR: Truncation failed: %s\n",
+            strerror(errno));
     return 1;
   }
   fprintf(stdout, "The memory region is truncated.\n");
 
   // Map the shared memory and initialize the counter
-  void* map = mmap(0, SH_SIZE, PROT_WRITE, MAP_SHARED, fd, 0);
+  void* map = mmap(0, SHARED_MEM_SIZE, PROT_WRITE,
+                    MAP_SHARED, fd, 0);
   if (map == MAP_FAILED) {
-    fprintf(stderr, "ERROR: Mapping failed: %s\n", strerror(errno));
+    fprintf(stderr, "ERROR: Mapping failed: %s\n",
+            strerror(errno));
     return 1;
   }
   counter = (int32_t*)map;
@@ -105,32 +107,33 @@ int main(int argc, char** argv) {
   if (pid) { // The parent process
     // Incrmenet the counter
     inc_counter();
-    fprintf(stdout, "The parent process sees the counter as %d.\n",
+    fprintf(stdout, "Parent process sees the counter as %d.\n",
         *counter);
 
     // Wait for the child process to exit
     int status = -1;
     wait(&status);
-    fprintf(stdout, "The child process finished with status %d.\n",
+    fprintf(stdout, "Child process finished with status %d.\n",
         status);
   } else { // The child process
     // Incrmenet the counter
     inc_counter();
-    fprintf(stdout, "The child process sees the counter as %d.\n",
+    fprintf(stdout, "Child process sees the counter as %d.\n",
         *counter);
   }
-  if (munmap(counter, SH_SIZE) < 0) {
-    fprintf(stderr, "ERROR: Unmapping failed: %s\n", strerror(errno));
+  if (munmap(counter, SHARED_MEM_SIZE) < 0) {
+    fprintf(stderr, "ERROR: Unmapping failed: %s\n",
+            strerror(errno));
     return 1;
   }
   if (close(fd) < 0) {
-    fprintf(stderr, "ERROR: Closing the shared memory fd filed: %s\n",
+    fprintf(stderr, "ERROR: Closing the fd filed: %s\n",
         strerror(errno));
     return 1;
   }
 
-  // Only parent process needs to shutdown the shared resource and
-  // the employed control mechanism
+  // Only parent process needs to shutdown the shared resource
+  // and the employed control mechanism
   if (pid) {
     shutdown_shared_resource();
     shutdown_control_mechanism();
