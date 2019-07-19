@@ -1,4 +1,4 @@
-// File name: ExtremeC_examples_chapter15_4_shared_mem.c
+// File name: ExtremeC_examples_chapter18_4_shared_mem.c
 // Description: Implementation of the shared_mem class.
 
 #include <stdio.h>

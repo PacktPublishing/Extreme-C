@@ -1,4 +1,4 @@
-// File name: ExtremeC_examples_chapter15_4_shared_cond.c
+// File name: ExtremeC_examples_chapter18_4_shared_cond.c
 // Description: Implementation of the shared_cond class.
 
 #include <stdio.h>
@@ -10,8 +10,8 @@
 #include <sys/mman.h>
 #include <pthread.h>
 
-#include "ExtremeC_examples_chapter15_4_shared_mem.h"
-#include "ExtremeC_examples_chapter15_4_shared_mutex.h"
+#include "ExtremeC_examples_chapter18_4_shared_mem.h"
+#include "ExtremeC_examples_chapter18_4_shared_mutex.h"
 
 typedef struct {
   struct shared_mem_t* shm;

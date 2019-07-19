@@ -1,14 +1,14 @@
-// File name: ExtremeC_examples_chapter15_4_main.c
-// Description: The example 15.4's main logic.
+// File name: ExtremeC_examples_chapter18_4_main.c
+// Description: The example 18.4's main logic.
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>
 #include <unistd.h>
 
-#include "ExtremeC_examples_chapter15_4_shared_int32.h"
-#include "ExtremeC_examples_chapter15_4_shared_mutex.h"
-#include "ExtremeC_examples_chapter15_4_shared_cond.h"
+#include "ExtremeC_examples_chapter18_4_shared_int32.h"
+#include "ExtremeC_examples_chapter18_4_shared_mutex.h"
+#include "ExtremeC_examples_chapter18_4_shared_cond.h"
 
 int int_received = 0;
 struct shared_cond_t* cond = NULL;

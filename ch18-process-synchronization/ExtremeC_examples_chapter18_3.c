@@ -1,4 +1,4 @@
-// File name: ExtremeC_examples_chapter15_3.c
+// File name: ExtremeC_examples_chapter18_3.c
 // Description: Demonstrates how to use a shared memory together
 //              with a shared mutex to cancel a number of in
 //              progress processes.

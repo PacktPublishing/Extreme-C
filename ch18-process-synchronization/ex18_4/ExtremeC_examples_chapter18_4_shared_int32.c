@@ -1,4 +1,4 @@
-// File name: ExtremeC_examples_chapter15_4_shared_int32.c
+// File name: ExtremeC_examples_chapter18_4_shared_int32.c
 // Description: Implementation of the shared_int32 class.
 
 #include <stdio.h>
@@ -9,7 +9,7 @@
 #include <fcntl.h>
 #include <sys/mman.h>
 
-#include "ExtremeC_examples_chapter15_4_shared_mem.h"
+#include "ExtremeC_examples_chapter18_4_shared_mem.h"
 
 typedef struct {
   struct shared_mem_t* shm;

@@ -1,4 +1,4 @@
-// File name: ExtremeC_examples_chapter15_4_shared_int32.h
+// File name: ExtremeC_examples_chapter18_4_shared_int32.h
 // Description: Declaration of the shared_int32 class.
 
 #include <stdint.h>

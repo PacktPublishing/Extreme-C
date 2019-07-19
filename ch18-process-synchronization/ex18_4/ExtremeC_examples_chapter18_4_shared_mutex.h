@@ -1,4 +1,4 @@
-// File name: ExtremeC_examples_chapter15_4_shared_mutex.h
+// File name: ExtremeC_examples_chapter18_4_shared_mutex.h
 // Description: Declaration of the shared_mutex class.
 
 #include <pthread.h>

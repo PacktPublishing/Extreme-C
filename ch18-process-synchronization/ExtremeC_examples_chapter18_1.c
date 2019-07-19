@@ -1,4 +1,4 @@
-// File name: ExtremeC_examples_chapter15_1.c
+// File name: ExtremeC_examples_chapter18_1.c
 // Description: Demonstrates how to use a named semaphore to
 //              protect a counter inside a shared memory region.
 

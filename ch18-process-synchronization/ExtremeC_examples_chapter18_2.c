@@ -1,4 +1,4 @@
-// File name: ExtremeC_examples_chapter15_2.c
+// File name: ExtremeC_examples_chapter18_2.c
 // Description: Demonstrates how to use a shared mutex to protect
 //              a shared memory based counter.
 
