@@ -1,10 +1,12 @@
-// File name: ExtremeC_examples_chapter4_1.h
-// Description: Declarations for attribute sturcture and behavior functions
+// File name: ExtremeC_examples_chapter6_1.h
+// Description: Declarations for attribute sturcture
+//              and behavior functions
 
-#ifndef EXTREME_C_EXAMPLES_CHAPTER_4_1_H
-#define EXTREME_C_EXAMPLES_CHAPTER_4_1_H
+#ifndef EXTREME_C_EXAMPLES_CHAPTER_6_1_H
+#define EXTREME_C_EXAMPLES_CHAPTER_6_1_H
 
-// This structure keeps all the attributes related to a car object
+// This structure keeps all the attributes 
+// related to a car object
 typedef struct {
   char name[32];
   double speed;

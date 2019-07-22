@@ -1,8 +1,9 @@
-// File name: ExtremeC_examples_chapter4_2.cpp
+// File name: ExtremeC_examples_chapter6_2.cpp
 // Description: Definition of the member functions in the Car class
 
 #include <string.h>
-#include "ExtremeC_examples_chapter4_2.h"
+
+#include "ExtremeC_examples_chapter6_2.h"
 
 Car::Car(const char* name) {
   strcpy(this->name, name);
@@ -10,7 +11,9 @@ Car::Car(const char* name) {
   this->fuel = 0.0;
 }
 
-Car::~Car() {}
+Car::~Car() {
+  // Nothing to do
+}
 
 void Car::Accelerate() {
   this->speed += 0.05;
@@ -31,4 +34,6 @@ void Car::Brake() {
   }
 }
 
-void Car::Refuel(double amount) { this->fuel = amount; }
+void Car::Refuel(double amount) {
+  this->fuel = amount;
+}

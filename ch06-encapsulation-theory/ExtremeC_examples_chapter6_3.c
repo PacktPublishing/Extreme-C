@@ -1,10 +1,10 @@
-// File name: ExtremeC_examples_chapter4_3.c
+// File name: ExtremeC_examples_chapter6_3.c
 // Description: This file contains the actual definition of
 //              the `list_t` attribute structure. It also
 //              contains the implementations of the behavior
 //              functions exposed by the header file. It has
-//              also a private behavior functions which
-//              is used internally.
+//              also a private behavior functions which is
+//              used internally.
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -31,7 +31,9 @@ bool_t __check_index(list_t* list, const int index) {
 }
 
 // Allocates memory for a list object
-list_t* list_malloc() { return (list_t*)malloc(sizeof(list_t)); }
+list_t* list_malloc() {
+  return (list_t*)malloc(sizeof(list_t));
+}
 
 // Constructor of a list object
 void list_init(list_t* list) {
@@ -41,11 +43,16 @@ void list_init(list_t* list) {
 }
 
 // Destructor of a list object
-void list_destroy(list_t* list) { free(list->items); }
+void list_destroy(list_t* list) {
+  // Deallocates the allocated memory
+  free(list->items);
+}
 
 int list_add(list_t* list, const int item) {
   // The usage of the private behavior
-  if (__list_is_full(list)) { return -1; }
+  if (__list_is_full(list)) {
+    return -1;
+  }
   list->items[list->size++] = item;
   return 0;
 }
@@ -58,8 +65,13 @@ int list_get(list_t* list, const int index, int* result) {
   return -1;
 }
 
-void list_clear(list_t* list) { list->size = 0; }
-size_t list_size(list_t* list) { return list->size; }
+void list_clear(list_t* list) {
+  list->size = 0;
+}
+
+size_t list_size(list_t* list) {
+  return list->size;
+}
 
 void list_print(list_t* list) {
   printf("[");
