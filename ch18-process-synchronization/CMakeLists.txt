@@ -14,14 +14,6 @@ add_executable(ex18_3.out
   ExtremeC_examples_chapter18_3.c
 )
 
-add_executable(father.out
-  lab/father.c
-)
-
-add_executable(son.out
-  lab/son.c
-)
-
 add_executable(ex18_4.out
   ex18_4/ExtremeC_examples_chapter18_4_shared_mem.c
   ex18_4/ExtremeC_examples_chapter18_4_shared_int32.c
@@ -47,16 +39,6 @@ target_link_libraries(ex18_3.out
 )
 
 target_link_libraries(ex18_4.out
-  rt
-  pthread
-)
-
-target_link_libraries(father.out
-  rt
-  pthread
-)
-
-target_link_libraries(son.out
   rt
   pthread
 )
