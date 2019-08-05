@@ -13,12 +13,14 @@
 int main(int argc, char** argv) {
 
   if (argc < 3) {
-    LOG_ERROR("Invalid number of arguments for version %s\n.", VERSION);
+    LOG_ERROR("Invalid number of arguments for version %s\n.",
+            VERSION);
     exit(1);
   }
 
   if (strcmp(argv[1], "-n") != 0) {
-    LOG_ERROR("%s is a wrong parameter at index %d for version %s.", argv[1], 1, VERSION);
+    LOG_ERROR("%s is a wrong param at index %d for version %s.",
+            argv[1], 1, VERSION);
     exit(1);
   }
 

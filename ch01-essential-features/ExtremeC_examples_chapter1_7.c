@@ -1,7 +1,7 @@
 // File name: ExtremeC_exampels_chapter1_7.c
 // Description: Example 1.7
 
-#define CONDITION
+#define CONDITION1
 
 int main(int argc, char** argv) {
 #ifdef CONDITION

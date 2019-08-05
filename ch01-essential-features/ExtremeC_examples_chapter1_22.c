@@ -1,5 +1,5 @@
-// File name: ExtremeC_exampels_chapter1_21.c
-// Description: Example 1.21
+// File name: ExtremeC_exampels_chapter1_22.c
+// Description: Example 1.22
 
 #include <stdio.h>
 

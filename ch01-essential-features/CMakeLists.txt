@@ -76,18 +76,14 @@ add_executable(ex1_21.out
   ExtremeC_examples_chapter1_21.c
 )
 
-add_library(ex1_22 STATIC
+add_executable(ex1_22.out
   ExtremeC_examples_chapter1_22.c
 )
 
-add_executable(ex1_23.out
+add_library(ex1_23 STATIC
   ExtremeC_examples_chapter1_23.c
 )
 
 add_executable(ex1_24.out
   ExtremeC_examples_chapter1_24.c
-)
-
-add_executable(ex1_25.out
-  ExtremeC_examples_chapter1_25.c
 )

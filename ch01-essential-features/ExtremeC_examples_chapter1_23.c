@@ -1,5 +1,5 @@
-// File name: ExtremeC_exampels_chapter1_22.c
-// Description: Example 1.22
+// File name: ExtremeC_exampels_chapter1_23.c
+// Description: Example 1.23
 
 typedef struct {
   int x;
