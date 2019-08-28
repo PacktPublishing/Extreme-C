@@ -15,6 +15,10 @@
 
 #define SHARED_MEM_SIZE 4
 
+// Shared file descriptor used to refer to
+// the shared memory object
+int shared_fd = -1;
+
 // The pointer to the shared counter
 int32_t* counter = NULL;
 
@@ -43,16 +47,15 @@ void shutdown_control_mechanism() {
   }
 }
 
-int init_shared_resource() {
+void init_shared_resource() {
   // Open the shared memory object
-  int shm_fd = shm_open("/shm0", O_CREAT | O_RDWR, 0600);
-  if (shm_fd < 0) {
+  shared_fd = shm_open("/shm0", O_CREAT | O_RDWR, 0600);
+  if (shared_fd < 0) {
     fprintf(stderr, "ERROR: Failed to create shared mem: %s\n",
         strerror(errno));
     exit(1);
   }
-  fprintf(stdout, "Shared memory fd is: %d\n", shm_fd);
-  return shm_fd;
+  fprintf(stdout, "Shared memory fd is: %d\n", shared_fd);
 }
 
 void shutdown_shared_resource() {
@@ -78,13 +81,13 @@ void inc_counter() {
 int main(int argc, char** argv) {
 
   // Parent process needs to initialize the shared resource
-  int fd = init_shared_resource();
+  init_shared_resource();
 
   // Parent process needs to initialize the control mechanism
   init_control_mechanism();
 
   // Allocate and truncate the shared memory region
-  if (ftruncate(fd, SHARED_MEM_SIZE * sizeof(char)) < 0) {
+  if (ftruncate(shared_fd, SHARED_MEM_SIZE * sizeof(char)) < 0) {
     fprintf(stderr, "ERROR: Truncation failed: %s\n",
             strerror(errno));
     return 1;
@@ -93,7 +96,7 @@ int main(int argc, char** argv) {
 
   // Map the shared memory and initialize the counter
   void* map = mmap(0, SHARED_MEM_SIZE, PROT_WRITE,
-                    MAP_SHARED, fd, 0);
+                    MAP_SHARED, shared_fd, 0);
   if (map == MAP_FAILED) {
     fprintf(stderr, "ERROR: Mapping failed: %s\n",
             strerror(errno));
@@ -126,13 +129,13 @@ int main(int argc, char** argv) {
             strerror(errno));
     return 1;
   }
-  if (close(fd) < 0) {
+  if (close(shared_fd) < 0) {
     fprintf(stderr, "ERROR: Closing the fd filed: %s\n",
         strerror(errno));
     return 1;
   }
 
-  // Only parent process needs to shutdown the shared resource
+  // Only parent process needs to shut down the shared resource
   // and the employed control mechanism
   if (pid) {
     shutdown_shared_resource();

@@ -63,7 +63,7 @@ int main(int argc, char** argv) {
   printf("My turn! %d ...\n", my_number);
   shared_mutex_unlock(mutex);
   sleep(1);
-  // NOTE: The broadcasting can come afetr unlocking the mutex.
+  // NOTE: The broadcasting can come after unlocking the mutex.
   shared_cond_broadcast(cond);
 
 destroy:

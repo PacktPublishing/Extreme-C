@@ -13,7 +13,7 @@
 #include <sys/wait.h>
 #include <pthread.h> // For using pthread_mutex_* functions
 
-#define SHARED_SIZE 4
+#define SHARED_MEM_SIZE 4
 
 // Shared file descriptor used to refer to shared memory object
 int shared_fd = -1;
@@ -123,7 +123,7 @@ void shutdown_shared_resource() {
 
 void inc_counter() {
   usleep(1);
-  pthread_mutex_lock(mutex); // Should check the retrun value.
+  pthread_mutex_lock(mutex); // Should check the return value.
   int32_t temp = *counter;
   usleep(1);
   temp++;
@@ -142,7 +142,7 @@ int main(int argc, char** argv) {
   init_control_mechanism();
 
   // Allocate and truncate the shared memory region
-  if (ftruncate(shared_fd, SHARED_SIZE * sizeof(char)) < 0) {
+  if (ftruncate(shared_fd, SHARED_MEM_SIZE * sizeof(char)) < 0) {
     fprintf(stderr, "ERROR: Truncation failed: %s\n",
             strerror(errno));
     return 1;
@@ -150,7 +150,7 @@ int main(int argc, char** argv) {
   fprintf(stdout, "The memory region is truncated.\n");
 
   // Map the shared memory and initialize the counter
-  void* map = mmap(0, SHARED_SIZE, PROT_WRITE,
+  void* map = mmap(0, SHARED_MEM_SIZE, PROT_WRITE,
           MAP_SHARED, shared_fd, 0);
   if (map == MAP_FAILED) {
     fprintf(stderr, "ERROR: Mapping failed: %s\n",
@@ -179,7 +179,7 @@ int main(int argc, char** argv) {
     fprintf(stdout, "Child process sees the counter as %d.\n",
         *counter);
   }
-  if (munmap(counter, SHARED_SIZE) < 0) {
+  if (munmap(counter, SHARED_MEM_SIZE) < 0) {
     fprintf(stderr, "ERROR: Unmapping failed: %s\n",
             strerror(errno));
     return 1;

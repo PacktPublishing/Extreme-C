@@ -100,7 +100,7 @@ void shared_cond_timedwait(shared_cond_t* obj,
     exit(1);
   }
   ts.tv_sec += (int)(time_nanosec / (1000L * 1000 * 1000));
-  ts.tv_nsec += time_nanosec % (1000L * 1000 * 1000);;
+  ts.tv_nsec += time_nanosec % (1000L * 1000 * 1000);
 
   if ((ret = pthread_cond_timedwait(obj->ptr,
                   shared_mutex_getptr(mutex), &ts))) {
