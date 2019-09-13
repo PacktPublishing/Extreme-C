@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-// Public interafce of the person class
+// Public interface of the person class
 #include "ExtremeC_examples_chapter8_3_person.h"
 
 //Forward declaration

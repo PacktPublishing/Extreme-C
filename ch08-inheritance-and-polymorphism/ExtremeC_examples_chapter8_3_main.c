@@ -9,7 +9,7 @@
 int main(int argc, char** argv) {
   // Create and construct the student object
   struct student_t* student = student_new();
-  student_ctor(student, "Thomas", "Anderson",
+  student_ctor(student, "John", "Doe",
           1987, "TA5667", 134);
 
   // We have to use student's behavior functions because the

@@ -11,11 +11,11 @@ struct student_t;
 struct student_t* student_new();
 
 // Constructor
-void student_ctor(struct student_t*, 
-                  const char*  /* first name */, 
-                  const char*  /* last name */, 
+void student_ctor(struct student_t*,
+                  const char*  /* first name */,
+                  const char*  /* last name */,
                   unsigned int /* birth year */,
-                  const char*  /* student numebr */,
+                  const char*  /* student number */,
                   unsigned int /* passed credits */);
 
 // Destructor
