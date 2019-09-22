@@ -13,7 +13,7 @@ void* stream_response_reader(void* obj) {
   struct context_t* context = (struct context_t*)obj;
   char buf[64];
   while (1) {
-    int ret = read(context->fd, buf, sizeof(buf));
+    int ret = read(context->sd, buf, sizeof(buf));
     if (ret < 0) {
       fprintf(stderr, "Read error! %s\n", strerror(errno));
       break;
@@ -27,17 +27,18 @@ void* stream_response_reader(void* obj) {
   return NULL;
 }
 
-void stream_client_loop(int conn_fd) {
+void stream_client_loop(int conn_sd) {
   struct context_t context;
 
-  context.fd = conn_fd;
+  context.sd = conn_sd;
   context.ser = calc_proto_ser_new();
   calc_proto_ser_ctor(context.ser, &context, 128);
   calc_proto_ser_set_resp_callback(context.ser, on_response);
   calc_proto_ser_set_error_callback(context.ser, on_error);
 
   pthread_t reader_thread;
-  pthread_create(&reader_thread, NULL, stream_response_reader, &context);
+  pthread_create(&reader_thread, NULL,
+          stream_response_reader, &context);
 
   char buf[128];
   printf("? (type quit to exit) ");
@@ -52,10 +53,12 @@ void stream_client_loop(int conn_fd) {
     if (cnt) {
       continue;
     }
-    struct buffer_t ser_req = calc_proto_ser_client_serialize(context.ser, &req);
-    int ret = write(context.fd, ser_req.data, ser_req.len);
+    struct buffer_t ser_req =
+        calc_proto_ser_client_serialize(context.ser, &req);
+    int ret = write(context.sd, ser_req.data, ser_req.len);
     if (ret == -1) {
-      fprintf(stderr, "Error while writing! %s\n", strerror(errno));
+      fprintf(stderr, "Error while writing! %s\n",
+              strerror(errno));
       break;
     }
     if (ret < ser_req.len) {
@@ -64,7 +67,7 @@ void stream_client_loop(int conn_fd) {
     }
     printf("The req(%d) is sent.\n", req.id);
   }
-  shutdown(conn_fd, SHUT_RD);
+  shutdown(conn_sd, SHUT_RD);
   calc_proto_ser_dtor(context.ser);
   calc_proto_ser_delete(context.ser);
   pthread_join(reader_thread, NULL);

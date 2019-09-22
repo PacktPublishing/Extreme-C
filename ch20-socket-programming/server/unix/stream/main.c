@@ -14,9 +14,10 @@ int main(int argc, char** argv) {
   char sock_file[] = "/tmp/calc_svc.sock";
 
   // ----------- 1. Create socket object ------------------
-  int server_fd = socket(AF_UNIX, SOCK_STREAM, 0);
-  if (server_fd == -1) {
-    fprintf(stderr, "Could not create socket: %s\n", strerror(errno));
+  int server_sd = socket(AF_UNIX, SOCK_STREAM, 0);
+  if (server_sd == -1) {
+    fprintf(stderr, "Could not create socket: %s\n",
+            strerror(errno));
     exit(1);
   }
 
@@ -31,23 +32,26 @@ int main(int argc, char** argv) {
   addr.sun_family = AF_UNIX;
   strncpy(addr.sun_path, sock_file, sizeof(addr.sun_path) - 1);
 
-  int result = bind(server_fd, (struct sockaddr*)&addr, sizeof(addr));
+  int result = bind(server_sd,
+          (struct sockaddr*)&addr, sizeof(addr));
   if (result == -1) {
-    close(server_fd);
-    fprintf(stderr, "Could not bind the address: %s\n", strerror(errno));
+    close(server_sd);
+    fprintf(stderr, "Could not bind the address: %s\n",
+            strerror(errno));
     exit(1);
   }
 
   // ----------- 3. Prepare backlog ------------------
-  result = listen(server_fd, 10);
+  result = listen(server_sd, 10);
   if (result == -1) {
-    close(server_fd);
-    fprintf(stderr, "Could not set the backlog: %s\n", strerror(errno));
+    close(server_sd);
+    fprintf(stderr, "Could not set the backlog: %s\n",
+            strerror(errno));
     exit(1);
   }
 
   // ----------- 4. Start accepting clients ---------
-  accept_forever(server_fd);
+  accept_forever(server_sd);
 
   return 0;
 }

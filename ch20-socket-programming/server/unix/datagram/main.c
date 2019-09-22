@@ -22,9 +22,10 @@ int main(int argc, char** argv) {
   char sock_file[] = "/tmp/calc_svc.sock";
 
   // ----------- 1. Create socket object ------------------
-  int server_fd = socket(AF_UNIX, SOCK_DGRAM, 0);
-  if (server_fd == -1) {
-    fprintf(stderr, "Could not create socket: %s\n", strerror(errno));
+  int server_sd = socket(AF_UNIX, SOCK_DGRAM, 0);
+  if (server_sd == -1) {
+    fprintf(stderr, "Could not create socket: %s\n",
+            strerror(errno));
     exit(1);
   }
 
@@ -39,15 +40,17 @@ int main(int argc, char** argv) {
   addr.sun_family = AF_UNIX;
   strncpy(addr.sun_path, sock_file, sizeof(addr.sun_path) - 1);
 
-  int result = bind(server_fd, (struct sockaddr*)&addr, sizeof(addr));
+  int result = bind(server_sd,
+          (struct sockaddr*)&addr, sizeof(addr));
   if (result == -1) {
-    close(server_fd);
-    fprintf(stderr, "Could not bind the address: %s\n", strerror(errno));
+    close(server_sd);
+    fprintf(stderr, "Could not bind the address: %s\n",
+            strerror(errno));
     exit(1);
   }
 
   // ----------- 3. Start serving requests ---------
-  serve_forever(server_fd);
+  serve_forever(server_sd);
 
   return 0;
 }

@@ -5,7 +5,7 @@
 #include <calc_proto_req.h>
 
 struct context_t {
-  int fd;
+  int sd;
   struct calc_proto_ser_t* ser;
 };
 

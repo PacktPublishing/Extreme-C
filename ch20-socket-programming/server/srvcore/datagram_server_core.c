@@ -15,48 +15,53 @@
 #include "datagram_server_core.h"
 
 struct client_addr_t {
-  int server_fd;
+  int server_sd;
   struct sockaddr* sockaddr;
   socklen_t socklen;
 };
 
-void datagram_write_resp(struct client_context_t* context, struct calc_proto_resp_t* resp) {
-  struct buffer_t buf = calc_proto_ser_server_serialize(context->ser, resp);
+void datagram_write_resp(struct client_context_t* context,
+        struct calc_proto_resp_t* resp) {
+  struct buffer_t buf =
+      calc_proto_ser_server_serialize(context->ser, resp);
   if (buf.len == 0) {
-    close(context->addr->server_fd);
-    fprintf(stderr, "Internal error while serializing response object.\n");
+    close(context->addr->server_sd);
+    fprintf(stderr, "Internal error while serializing object.\n");
     exit(1);
   }
-  int ret = sendto(context->addr->server_fd, buf.data, buf.len,
+  int ret = sendto(context->addr->server_sd, buf.data, buf.len,
       0, context->addr->sockaddr, context->addr->socklen);
   free(buf.data);
   if (ret == -1) {
-    fprintf(stderr, "Could not write to client: %s\n", strerror(errno));
-    close(context->addr->server_fd);
+    fprintf(stderr, "Could not write to client: %s\n",
+            strerror(errno));
+    close(context->addr->server_sd);
     exit(1);
   } else if (ret < buf.len) {
     fprintf(stderr, "WARN: Less bytes were written!\n");
-    close(context->addr->server_fd);
+    close(context->addr->server_sd);
     exit(1);
   }
-
 }
 
-void serve_forever(int server_fd) {
+void serve_forever(int server_sd) {
   char buffer[64];
   while (1) {
     struct sockaddr* sockaddr = sockaddr_new();
     socklen_t socklen = sockaddr_sizeof();
-    int read_nr_bytes = recvfrom(server_fd, buffer, sizeof(buffer), 0, sockaddr, &socklen);
+    int read_nr_bytes = recvfrom(server_sd, buffer,
+            sizeof(buffer), 0, sockaddr, &socklen);
     if (read_nr_bytes == -1) {
-      close(server_fd);
-      fprintf(stderr, "Could not read from datagram socket: %s\n", strerror(errno));
+      close(server_sd);
+      fprintf(stderr, "Could not read from datagram socket: %s\n",
+              strerror(errno));
       exit(1);
     }
     struct client_context_t context;
 
-    context.addr = (struct client_addr_t*)malloc(sizeof(struct client_addr_t));
-    context.addr->server_fd = server_fd;
+    context.addr = (struct client_addr_t*)
+        malloc(sizeof(struct client_addr_t));
+    context.addr->server_sd = server_sd;
     context.addr->sockaddr = sockaddr;
     context.addr->socklen = socklen;
 
@@ -71,7 +76,9 @@ void serve_forever(int server_fd) {
     context.write_resp = &datagram_write_resp;
 
     bool_t req_found = FALSE;
-    struct buffer_t buf; buf.data = buffer; buf.len = read_nr_bytes;
+    struct buffer_t buf;
+    buf.data = buffer;
+    buf.len = read_nr_bytes;
     calc_proto_ser_server_deserialize(context.ser, buf, &req_found);
 
     if (!req_found) {

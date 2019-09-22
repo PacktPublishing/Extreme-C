@@ -13,9 +13,10 @@ int main(int argc, char** argv) {
 
   // ----------- 1. Create socket object ------------------
 
-  int conn_fd = socket(AF_INET, SOCK_STREAM, 0);
-  if (conn_fd == -1) {
-    fprintf(stderr, "Could not create socket: %s\n", strerror(errno));
+  int conn_sd = socket(AF_INET, SOCK_STREAM, 0);
+  if (conn_sd == -1) {
+    fprintf(stderr, "Could not create socket: %s\n",
+            strerror(errno));
     exit(1);
   }
 
@@ -37,14 +38,15 @@ int main(int argc, char** argv) {
   addr.sin_addr = *((struct in_addr*)host_entry->h_addr);;
   addr.sin_port = htons(6666);
 
-  int result = connect(conn_fd, (struct sockaddr*)&addr, sizeof(addr));
+  int result = connect(conn_sd,
+          (struct sockaddr*)&addr, sizeof(addr));
   if (result == -1) {
-    close(conn_fd);
+    close(conn_sd);
     fprintf(stderr, "Could no connect: %s\n", strerror(errno));
     exit(1);
   }
 
-  stream_client_loop(conn_fd);
+  stream_client_loop(conn_sd);
 
   return 0;
 }

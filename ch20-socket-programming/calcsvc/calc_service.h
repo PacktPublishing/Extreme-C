@@ -22,6 +22,7 @@ double calc_service_sub(struct calc_service_t*, double, double b,
     bool_t mem);
 double calc_service_mul(struct calc_service_t*, double, double b,
     bool_t mem);
-int calc_service_div(struct calc_service_t*, double, double, double*);
+int calc_service_div(struct calc_service_t*, double,
+        double, double*);
 
 #endif

@@ -3,16 +3,14 @@
 
 #include <stdint.h>
 
-typedef char method_t;
-
-enum method_t {
+typedef enum {
   NONE,
   GETMEM, RESMEM,
   ADD, ADDM,
   SUB, SUBM,
   MUL, MULM,
   DIV
-};
+} method_t;
 
 struct calc_proto_req_t {
   int32_t id;

@@ -14,7 +14,7 @@ void* datagram_response_reader(void* obj) {
   char buf[64];
   while (1) {
     // We could use `read` since we don't need the source address.
-    int ret = recvfrom(context->fd, buf, sizeof(buf), 0, NULL, NULL);
+    int ret = recvfrom(context->sd, buf, sizeof(buf), 0, NULL, NULL);
     if (ret < 0) {
       fprintf(stderr, "Read error! %s\n", strerror(errno));
       break;
@@ -28,10 +28,10 @@ void* datagram_response_reader(void* obj) {
   return NULL;
 }
 
-void datagram_client_loop(int conn_fd) {
+void datagram_client_loop(int conn_sd) {
   struct context_t context;
 
-  context.fd = conn_fd;
+  context.sd = conn_sd;
   context.ser = calc_proto_ser_new();
   calc_proto_ser_ctor(context.ser, &context, 128);
   calc_proto_ser_set_resp_callback(context.ser, on_response);
@@ -55,7 +55,7 @@ void datagram_client_loop(int conn_fd) {
     }
     struct buffer_t buf = calc_proto_ser_client_serialize(context.ser, &req);
     // We could use `write` since we already know the destination.
-    int ret = write(context.fd, buf.data, buf.len);
+    int ret = write(context.sd, buf.data, buf.len);
     free(buf.data);
     if (ret == -1) {
       fprintf(stderr, "Error while writing! %s\n", strerror(errno));
@@ -67,7 +67,7 @@ void datagram_client_loop(int conn_fd) {
     }
     printf("The req(%d) is sent.\n", req.id);
   }
-  shutdown(conn_fd, SHUT_RD);
+  shutdown(conn_sd, SHUT_RD);
   pthread_join(reader_thread, NULL);
   calc_proto_ser_dtor(context.ser);
   calc_proto_ser_delete(context.ser);

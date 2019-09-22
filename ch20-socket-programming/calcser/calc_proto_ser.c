@@ -258,33 +258,43 @@ void calc_proto_ser_set_error_callback(struct calc_proto_ser_t* ser, error_cb_t 
   ser->error_cb = error_cb;
 }
 
-void calc_proto_ser_server_deserialize(struct calc_proto_ser_t* ser, struct buffer_t buff, bool_t* req_found) {
+void calc_proto_ser_server_deserialize(
+    struct calc_proto_ser_t* ser,
+    struct buffer_t buff,
+    bool_t* req_found) {
   if (req_found) {
     *req_found = FALSE;
   }
-  _deserialize(ser, buff, _parse_req_and_notify, ERROR_INVALID_REQUEST, req_found);
+  _deserialize(ser, buff, _parse_req_and_notify,
+          ERROR_INVALID_REQUEST, req_found);
 }
 
-struct buffer_t calc_proto_ser_server_serialize(struct calc_proto_ser_t* ser,
+struct buffer_t calc_proto_ser_server_serialize(
+    struct calc_proto_ser_t* ser,
     const struct calc_proto_resp_t* resp) {
   struct buffer_t buff;
   char resp_result_str[64];
   _serialize_double(resp_result_str, resp->result);
   buff.data = (char*)malloc(64 * sizeof(char));
-  sprintf(buff.data, "%d%c%d%c%s%c", resp->req_id, FIELD_DELIMITER, (int)resp->status, FIELD_DELIMITER,
+  sprintf(buff.data, "%d%c%d%c%s%c", resp->req_id,
+          FIELD_DELIMITER, (int)resp->status, FIELD_DELIMITER,
       resp_result_str, MESSAGE_DELIMITER);
   buff.len = strlen(buff.data);
   return buff;
 }
 
-void calc_proto_ser_client_deserialize(struct calc_proto_ser_t* ser, struct buffer_t buff, bool_t* resp_found) {
+void calc_proto_ser_client_deserialize(
+    struct calc_proto_ser_t* ser,
+    struct buffer_t buff, bool_t* resp_found) {
   if (resp_found) {
     *resp_found = FALSE;
   }
-  _deserialize(ser, buff, _parse_resp_and_notify, ERROR_INVALID_RESPONSE, resp_found);
+  _deserialize(ser, buff, _parse_resp_and_notify,
+          ERROR_INVALID_RESPONSE, resp_found);
 }
 
-struct buffer_t calc_proto_ser_client_serialize(struct calc_proto_ser_t* ser,
+struct buffer_t calc_proto_ser_client_serialize(
+    struct calc_proto_ser_t* ser,
     const struct calc_proto_req_t* req) {
   struct buffer_t buff;
   char req_op1_str[64];
@@ -292,8 +302,10 @@ struct buffer_t calc_proto_ser_client_serialize(struct calc_proto_ser_t* ser,
   _serialize_double(req_op1_str, req->operand1);
   _serialize_double(req_op2_str, req->operand2);
   buff.data = (char*)malloc(64 * sizeof(char));
-  sprintf(buff.data, "%d%c%s%c%s%c%s%c", req->id, FIELD_DELIMITER, method_to_str(req->method), FIELD_DELIMITER,
-      req_op1_str, FIELD_DELIMITER, req_op2_str, MESSAGE_DELIMITER);
+  sprintf(buff.data, "%d%c%s%c%s%c%s%c", req->id, FIELD_DELIMITER,
+          method_to_str(req->method), FIELD_DELIMITER,
+          req_op1_str, FIELD_DELIMITER, req_op2_str,
+          MESSAGE_DELIMITER);
   buff.len = strlen(buff.data);
   return buff;
 }
