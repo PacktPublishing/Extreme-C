@@ -1,3 +1,0 @@
-[submodule "ch19/googletest"]
-	path = ch20-moved/googletest
-	url = https://github.com/google/googletest
