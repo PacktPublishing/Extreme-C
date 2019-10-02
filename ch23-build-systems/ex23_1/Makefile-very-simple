@@ -1,0 +1,10 @@
+clean:
+	rm -rf out
+build:
+	mkdir -p out
+	gcc -c calc/add.c -o out/add.o
+	gcc -c calc/multiply.c -o out/multiply.o
+	gcc -c calc/subtract.c -o out/subtract.o
+	ar rcs out/libcalc.a out/add.o out/multiply.o out/subtract.o
+	gcc -c -Icalc exec/main.c -o out/main.o
+	gcc -Lout -lcalc out/main.o -o out/ex23_1.out
