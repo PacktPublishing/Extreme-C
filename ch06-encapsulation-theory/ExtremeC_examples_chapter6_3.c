@@ -11,7 +11,7 @@
 
 #define MAX_SIZE 10
 
-// Define the type bool_t
+// Define the alias type bool_t
 typedef int bool_t;
 
 // Define the type list_t
