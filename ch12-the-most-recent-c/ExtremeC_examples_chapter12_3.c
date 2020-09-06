@@ -49,18 +49,18 @@ unicode_len_t strlen_u8(char* str) {
       res.num_chars++;
       res.num_bytes++;
       str++;
-    } else if ((*str & 0xc0) == 0xc0) { // 0xc0 = 0b11000000
-      res.num_chars++;
-      res.num_bytes += 2;
-      str += 2;
-    } else if ((*str & 0xe0) == 0xe0) { // 0xe0 = 0b11100000
-      res.num_chars++;
-      res.num_bytes += 3;
-      str += 3;
     } else if ((*str & 0xf0) == 0xf0) { // 0xf0 = 0b11110000
       res.num_chars++;
       res.num_bytes += 4;
       str += 4;
+    } else if ((*str & 0xe0) == 0xe0) { // 0xe0 = 0b11100000
+      res.num_chars++;
+      res.num_bytes += 3;
+      str += 3;
+    } else if ((*str & 0xc0) == 0xc0) { // 0xc0 = 0b11000000
+      res.num_chars++;
+      res.num_bytes += 2;
+      str += 2;
     } else {
       fprintf(stderr, "UTF-8 string is not valid!\n");
       exit(1);
