@@ -28,7 +28,7 @@ void person_ctor(person_t* person,
 
 // Destructor
 void person_dtor(person_t* person) {
-  // Nothing to do
+  free(person);
 }
 
 // Behavior functions
