@@ -4,12 +4,14 @@
 #include <stdio.h>
 
 #define PRINT(a) printf("%d\n", a);
-#define LOOP(v, s, e) for (int v = s; v <= e; v++) {
-#define ENDLOOP }
+#define LOOP(v, s, e) \
+  for (int v = s; v <= e; v++)
 
-int main(int argc, char** argv) {
+int main(void) {
   LOOP(counter, 1, 10)
     PRINT(counter)
-  ENDLOOP
+  /** TODO
+  * If your window is curled up: use the getchar(); method.
+  */
   return 0;
 }
