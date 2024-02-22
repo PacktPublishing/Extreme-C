@@ -1,13 +1,13 @@
 CC = gcc
 
 build: prereq out/main.o out/libcalc.a
-	${CC} -Lout -lcalc out/main.o -o out/ex23_1.out
+	${CC} -Lout -lcalc -o out/ex23_1.out
 
 prereq:
 	mkdir -p out
 
 out/libcalc.a: out/add.o out/multiply.o out/subtract.o
-	ar rcs out/libcalc.a out/add.o out/multiply.o out/subtract.o
+	ar rcs out/libcalc.a out/add.o out/multiply.o out/subtract.o out/main.o
 
 out/main.o: exec/main.c calc/calc.h
 	${CC} -c -Icalc exec/main.c -o out/main.o
