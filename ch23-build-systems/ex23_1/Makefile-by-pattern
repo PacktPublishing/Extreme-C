@@ -10,7 +10,7 @@ LIBCALC = ${BUILD_DIR}/lib${LIBCALCNAME}.a
 EXEC = ${BUILD_DIR}/ex23_1.out
 
 build: prereq ${BUILD_DIR}/exec/main.o ${LIBCALC}
-	${CC} -L${BUILD_DIR} -l${LIBCALCNAME} ${BUILD_DIR}/exec/main.o -o ${EXEC}
+	${CC} -L${BUILD_DIR} -l${LIBCALCNAME} -o ${EXEC}
 
 prereq:
 	mkdir -p ${BUILD_DIR}
